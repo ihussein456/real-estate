@@ -1,13 +1,26 @@
-import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, Alert } from 'react-native'
 import React from 'react'
 import images from '@/constants/images'
 import icons from '@/constants/icons'
-
+import { login } from '@/lib/appwrite'
 
 const SignIn = () => {
 
-  const handleLogin = () => {
-    console.log('login')  
+  const handleLogin = async () => {
+    try {
+        const result = await login()
+        if(result){
+            console.log('Login success')
+        } else {
+            throw new Error('Login failed')
+        }
+    } catch (error) {
+        console.error('Sign in error:', error);
+        Alert.alert(
+            'Login Failed',
+            error instanceof Error ? error.message : 'An unknown error occurred'
+        );
+    }
   }
 
   return (
