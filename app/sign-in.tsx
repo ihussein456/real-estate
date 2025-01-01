@@ -3,14 +3,20 @@ import React from 'react'
 import images from '@/constants/images'
 import icons from '@/constants/icons'
 import { login } from '@/lib/appwrite'
+import { useGlobalContext } from '@/lib/global-provider'
+import { Redirect } from 'expo-router'
 
 const SignIn = () => {
+
+  const {isLoggedIn, user, loading, refetch} = useGlobalContext();
+  if(!loading && isLoggedIn) return <Redirect href="/" />
 
   const handleLogin = async () => {
     try {
         const result = await login()
         if(result){
             console.log('Login success')
+            refetch()
         } else {
             throw new Error('Login failed')
         }
